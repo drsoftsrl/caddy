@@ -1,0 +1,10 @@
+FROM caddy:2.7-alpine
+
+COPY Caddyfile /etc/caddy/Caddyfile
+
+EXPOSE 8080
+
+HEALTHCHECK --interval=50s --timeout=5s --start-period=5s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:8080/health || exit 1
+
+CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
