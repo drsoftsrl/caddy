@@ -3,10 +3,10 @@
     log {
         output stdout
         format json
-        level {$LOG_LEVEL:DEBUG}
+        level {$LOG_LEVEL:INFO}
     }
     on_demand_tls {
-        ask https://ipn.dnsproxifier.com/external/sites/domain_check/
+        ask https://ipn.anonymous-proxies.net/external/sites/domain_check/
     }
     storage file_system {
         root /data/caddy
@@ -28,26 +28,26 @@
     }
 
     handle @ipn_subdomain {
-        reverse_proxy https://ipn.dnsproxifier.com {
+        reverse_proxy https://ipn.anonymous-proxies.net {
             # FIX 2: Manually set the Host to the target's expected domain
-            header_up Host ipn.dnsproxifier.com
+            header_up Host ipn.anonymous-proxies.net
             header_up X-Real-IP {remote_host}
             header_up X-Forwarded-Proto https
 
             transport http {
                 tls
-                tls_server_name ipn.dnsproxifier.com
+                tls_server_name ipn.anonymous-proxies.net
             }
         }
     }
 
     @myaccount_subdomain host myaccount.*
     handle @myaccount_subdomain {
-        reverse_proxy https://myaccount.dnsproxifier.com {
-            header_up Host myaccount.dnsproxifier.com
+        reverse_proxy https://myaccount.anonymous-proxies.net {
+            header_up Host myaccount.anonymous-proxies.net
             transport http {
                 tls
-                tls_server_name myaccount.dnsproxifier.com
+                tls_server_name myaccount.anonymous-proxies.net
             }
         }
     }
